@@ -24,20 +24,20 @@ namespace CoreCMS.Persistence.Tests
                 using (var context = new CMSDbContext(options))
                 {
                     context.Database.EnsureCreated().Should().Be(true);
-                    context.Users.Add(new User
+                    context.Managers.Add(new Manager
                     {
-                        Name = "Ben"
+                        AccountName = "Ben"
                     });
 
                     var count = context.SaveChanges();
 
                     count.Should().Be(1);
 
-                    var user = context.Users.FirstOrDefault();
+                    var manager = context.Managers.FirstOrDefault();
 
-                    user.Should().NotBeNull();
-                    user.Name.Should().Be("Ben");
-                    user.UserId.Should().Be(1);
+                    manager.Should().NotBeNull();
+                    manager.AccountName.Should().Be("Ben");
+                    manager.ManagerId.Should().Be(1);
                 }
             }
             finally
