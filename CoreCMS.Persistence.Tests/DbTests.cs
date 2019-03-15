@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using CoreCMS.Domain.Entities;
+using CoreCMS.Persistence.Tests.Testers;
 using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -15,35 +15,32 @@ namespace CoreCMS.Persistence.Tests
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
-            try
+            var options = new DbContextOptionsBuilder<CMSDbContext>()
+                .UseSqlite(connection)
+                .Options;
+
+            using (var context = new CMSDbContext(options))
             {
-                var options = new DbContextOptionsBuilder<CMSDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                context.Database.EnsureCreated().Should().Be(true);
 
-                using (var context = new CMSDbContext(options))
-                {
-                    context.Database.EnsureCreated().Should().Be(true);
-                    context.Managers.Add(new Manager
-                    {
-                        AccountName = "Ben"
-                    });
+                var managerRoleTester = new ManagerRoleTester();
+                var managerTester = new ManagerTester();
 
-                    var count = context.SaveChanges();
+                // Insertions
+                context.ManagerRoles.Add(managerRoleTester.CreateInstance());
+                context.SaveChanges();
 
-                    count.Should().Be(1);
+                var managerRole= context.ManagerRoles.FirstOrDefault();
+                context.Managers.Add(managerTester.CreateInstance(managerRole.ManagerRoleId));
+                context.SaveChanges();
 
-                    var manager = context.Managers.FirstOrDefault();
-
-                    manager.Should().NotBeNull();
-                    manager.AccountName.Should().Be("Ben");
-                    manager.ManagerId.Should().Be(1);
-                }
+                // Validations
+                var manager= context.Managers.FirstOrDefault();
+                managerRoleTester.Validate(managerRole, context.ManagerRoles.Count());
+                managerTester.Validate(manager);
             }
-            finally
-            {
-                connection.Close();
-            }
+
+            connection.Close();
         }
     }
 }
