@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CoreCMS.Domain.Entities;
 using CoreCMS.Persistence.Tests.Testers;
 using FluentAssertions;
 using Microsoft.Data.Sqlite;
@@ -23,21 +24,38 @@ namespace CoreCMS.Persistence.Tests
             {
                 context.Database.EnsureCreated().Should().Be(true);
 
-                var managerRoleTester = new ManagerRoleTester();
-                var managerTester = new ManagerTester();
 
                 // Insertions
-                context.ManagerRoles.Add(managerRoleTester.CreateInstance());
+                context.ManagerRoles.Add(ManagerRoleTester.CreateInstance());
                 context.SaveChanges();
+                var managerRole= context.ManagerRoles.First();
 
-                var managerRole= context.ManagerRoles.FirstOrDefault();
-                context.Managers.Add(managerTester.CreateInstance(managerRole.ManagerRoleId));
+                context.Managers.Add(ManagerTester.CreateInstance(managerRole.ManagerRoleId));
                 context.SaveChanges();
+                var manager = context.Managers.First();
+
+                context.OperationLogs.Add(OperationLogTester.CreateInstance(manager.ManagerId));
+                context.SaveChanges();
+                var operationLog = context.OperationLogs.First();
+
+                context.AdminMenus.Add(AdminMenuTester.CreateInstance(1));
+                context.SaveChanges();
+                var rootMenu = context.AdminMenus.First();
+                context.AdminMenus.Add(AdminMenuTester.CreateInstance(rootMenu.AdminMenuId));
+                context.SaveChanges();
+                var testMenu = context.AdminMenus.First(m => m.AdminMenuId == 2);
+
+                context.RoleAccesses.Add(RoleAccessTester.CreateInstance(managerRole.ManagerRoleId,
+                    testMenu.AdminMenuId));
+                context.SaveChanges();
+                var ra = context.RoleAccesses.First();
 
                 // Validations
-                var manager= context.Managers.FirstOrDefault();
-                managerRoleTester.Validate(managerRole, context.ManagerRoles.Count());
-                managerTester.Validate(manager);
+                ManagerRoleTester.Validate(managerRole);
+                ManagerTester.Validate(manager, managerRole.ManagerRoleId);
+                OperationLogTester.Validate(operationLog, manager.ManagerId);
+                AdminMenuTester.Validate(testMenu, rootMenu.AdminMenuId);
+                RoleAccessTester.Validate(ra, managerRole.ManagerRoleId, testMenu.AdminMenuId);
             }
 
             connection.Close();

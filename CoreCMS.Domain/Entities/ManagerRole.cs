@@ -9,6 +9,7 @@ namespace CoreCMS.Domain.Entities
         public ManagerRole()
         {
             Managers = new HashSet<Manager>();
+            RoleAccesses = new HashSet<RoleAccess>();
         }
 
         public int ManagerRoleId { get; set; }
@@ -22,5 +23,6 @@ namespace CoreCMS.Domain.Entities
         public bool IsDeleted { get; set; }
 
         public ICollection<Manager> Managers { get; }
+        public ICollection<RoleAccess> RoleAccesses { get; set; }
     }
 }

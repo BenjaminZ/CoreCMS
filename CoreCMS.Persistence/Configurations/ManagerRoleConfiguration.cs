@@ -9,6 +9,7 @@ namespace CoreCMS.Persistence.Configurations
         public void Configure(EntityTypeBuilder<ManagerRole> builder)
         {
             builder.HasKey(mr => mr.ManagerRoleId);
+            builder.Property(mr => mr.ManagerRoleId).HasColumnName("ManagerRoleID");
             builder.Property(mr => mr.ManagerRoleName)
                 .HasMaxLength(64)
                 .IsRequired();

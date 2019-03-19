@@ -16,6 +16,9 @@ namespace CoreCMS.Persistence
 
         public DbSet<Manager> Managers { get; set; }
         public DbSet<ManagerRole> ManagerRoles { get; set; }
+        public DbSet<OperationLog> OperationLogs { get; set; }
+        public DbSet<AdminMenu> AdminMenus { get; set; }
+        public DbSet<RoleAccess> RoleAccesses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

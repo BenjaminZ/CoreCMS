@@ -11,7 +11,9 @@ namespace CoreCMS.Persistence.Configurations
         {
             builder.HasKey(m => m.ManagerId);
             builder.Property(m => m.ManagerId).HasColumnName("ManagerID");
-            builder.Property(m => m.ManagerRoleId).HasColumnName("ManagerRoleID");
+            builder.Property(m => m.ManagerRoleId)
+                .IsRequired()
+                .HasColumnName("ManagerRoleID");
 
             builder.Property(m => m.AccountName)
                 .HasMaxLength(32)
