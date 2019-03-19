@@ -25,6 +25,6 @@ namespace CoreCMS.Domain.Entities
         public bool IsHot { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
-        public ArticleCategory ArticleCategory { get; set; }
+        public virtual ArticleCategory ArticleCategory { get; set; }
     }
 }

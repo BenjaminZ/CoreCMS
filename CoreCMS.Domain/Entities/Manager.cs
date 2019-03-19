@@ -6,11 +6,6 @@ namespace CoreCMS.Domain.Entities
 {
     public class Manager
     {
-        public Manager()
-        {
-            OperationLogs = new HashSet<OperationLog>();
-        }
-
         public int ManagerId { get; set; }
         public int ManagerRoleId { get; set; }
         public string AccountName { get; set; }
@@ -29,7 +24,7 @@ namespace CoreCMS.Domain.Entities
         public bool IsLocked { get; set; }
         public bool IsDeleted { get; set; }
         public string Note { get; set; }
-        public ManagerRole ManagerRole { get; set; }
-        public ICollection<OperationLog> OperationLogs { get; set; }
+        public virtual ManagerRole ManagerRole { get; set; }
+        public virtual ICollection<OperationLog> OperationLogs { get; set; }
     }
 }

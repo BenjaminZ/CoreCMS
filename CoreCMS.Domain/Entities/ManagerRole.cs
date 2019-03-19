@@ -6,12 +6,6 @@ namespace CoreCMS.Domain.Entities
 {
     public class ManagerRole
     {
-        public ManagerRole()
-        {
-            Managers = new HashSet<Manager>();
-            RoleAccesses = new HashSet<RoleAccess>();
-        }
-
         public int ManagerRoleId { get; set; }
         public string ManagerRoleName { get; set; }
         public int ManagerRoleType { get; set; }
@@ -22,7 +16,7 @@ namespace CoreCMS.Domain.Entities
         public DateTime? ModifyTime { get; set; }
         public bool IsDeleted { get; set; }
 
-        public ICollection<Manager> Managers { get; }
-        public ICollection<RoleAccess> RoleAccesses { get; set; }
+        public virtual ICollection<Manager> Managers { get; set; }
+        public virtual ICollection<RoleAccess> RoleAccesses { get; set; }
     }
 }

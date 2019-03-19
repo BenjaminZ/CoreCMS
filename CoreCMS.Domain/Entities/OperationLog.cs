@@ -10,6 +10,6 @@ namespace CoreCMS.Domain.Entities
         public DateTime OperateTime { get; set; }
         public string OperatorIp { get; set; }
         public string Note { get; set; }
-        public Manager Operator { get; set; }
+        public virtual Manager Operator { get; set; }
     }
 }

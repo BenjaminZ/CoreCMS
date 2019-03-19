@@ -6,12 +6,6 @@ namespace CoreCMS.Domain.Entities
 {
     public class AdminMenu
     {
-        public AdminMenu()
-        {
-            ChildMenus = new HashSet<AdminMenu>();
-            RoleAccesses = new HashSet<RoleAccess>();
-        }
-
         public int AdminMenuId { get; set; }
         public int ParentMenuId { get; set; }
         public string Name { get; set; }
@@ -27,10 +21,10 @@ namespace CoreCMS.Domain.Entities
         public int ModifiedBy { get; set; }
         public DateTime? ModifyTime { get; set; }
         public bool IsDeleted { get; set; }
-        public AdminMenu ParentMenu { get; set; }
+        public virtual AdminMenu ParentMenu { get; set; }
 
-        public ICollection<AdminMenu> ChildMenus { get; set; }
+        public virtual ICollection<AdminMenu> ChildMenus { get; set; }
 
-        public ICollection<RoleAccess> RoleAccesses { get; set; }
+        public virtual ICollection<RoleAccess> RoleAccesses { get; set; }
     }
 }

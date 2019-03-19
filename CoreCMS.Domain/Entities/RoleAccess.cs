@@ -5,8 +5,8 @@ namespace CoreCMS.Domain.Entities
         public int RoleAccessId { get; set; }
         public int ManagerRoleId { get; set; }
         public int AdminMenuId { get; set; }
-        public string AcessType { get; set; }
-        public AdminMenu AdminMenu { get; set; }
-        public ManagerRole ManagerRole { get; set; }
+        public string AccessType { get; set; }
+        public virtual AdminMenu AdminMenu { get; set; }
+        public virtual ManagerRole ManagerRole { get; set; }
     }
 }

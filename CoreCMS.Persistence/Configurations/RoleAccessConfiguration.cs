@@ -15,7 +15,7 @@ namespace CoreCMS.Persistence.Configurations
             builder.Property(a => a.ManagerRoleId)
                 .IsRequired()
                 .HasColumnName("ManagerRoleID");
-            builder.Property(a => a.AcessType).HasMaxLength(128);
+            builder.Property(a => a.AccessType).HasMaxLength(128);
 
             builder.HasOne(a => a.AdminMenu)
                 .WithMany(m => m.RoleAccesses)

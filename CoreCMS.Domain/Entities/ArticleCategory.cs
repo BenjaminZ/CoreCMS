@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace CoreCMS.Domain.Entities
@@ -17,7 +15,7 @@ namespace CoreCMS.Domain.Entities
         public string SeoDescription { get; set; }
         public bool IsDeleted { get; set; }
 
-        public ArticleCategory ParentCategory { get; set; }
+        public virtual ArticleCategory ParentCategory { get; set; }
         public virtual ICollection<ArticleCategory> ChildCategories { get; set; }
         public virtual ICollection<Article> Articles { get; set; }
     }
