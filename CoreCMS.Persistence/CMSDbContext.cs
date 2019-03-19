@@ -19,6 +19,8 @@ namespace CoreCMS.Persistence
         public DbSet<OperationLog> OperationLogs { get; set; }
         public DbSet<AdminMenu> AdminMenus { get; set; }
         public DbSet<RoleAccess> RoleAccesses { get; set; }
+        public DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,8 +29,9 @@ namespace CoreCMS.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseLazyLoadingProxies();
+            
             if (optionsBuilder.IsConfigured) return;
-
             optionsBuilder.UseSqlite("Data Source=CoreCMS.db");
         }
     }

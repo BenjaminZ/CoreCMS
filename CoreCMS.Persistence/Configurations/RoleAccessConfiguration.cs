@@ -11,7 +11,6 @@ namespace CoreCMS.Persistence.Configurations
             builder.HasKey(a => a.RoleAccessId);
             builder.Property(a => a.RoleAccessId).HasColumnName("RoleAccessID");
             builder.Property(a => a.AdminMenuId)
-                .IsRequired()
                 .HasColumnName("AdminMenuID");
             builder.Property(a => a.ManagerRoleId)
                 .IsRequired()

@@ -10,9 +10,7 @@ namespace CoreCMS.Persistence.Configurations
         {
             builder.HasKey(m => m.AdminMenuId);
             builder.Property(m => m.AdminMenuId).HasColumnName("AdminMenuID");
-            builder.Property(m => m.ParentMenuId)
-                .IsRequired()
-                .HasColumnName("ParentMenuID");
+            builder.Property(m => m.ParentMenuId).HasColumnName("ParentMenuID");
             builder.Property(m => m.Name)
                 .IsRequired()
                 .HasMaxLength(32);
