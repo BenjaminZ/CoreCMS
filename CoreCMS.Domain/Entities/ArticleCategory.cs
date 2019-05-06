@@ -6,7 +6,7 @@ namespace CoreCMS.Domain.Entities
     {
         public int ArticleCategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int ParentCategoryId { get; set; }
+        public int? ParentCategoryId { get; set; }
         public int Depth { get; set; }
         public int OrderNumber { get; set; }
         public string IconPath { get; set; }

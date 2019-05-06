@@ -18,6 +18,7 @@ namespace CoreCMS.Persistence.Tests
 
             var options = new DbContextOptionsBuilder<CMSDbContext>()
                 .UseSqlite(connection)
+                .UseLazyLoadingProxies()
                 .Options;
 
             using (var context = new CMSDbContext(options))

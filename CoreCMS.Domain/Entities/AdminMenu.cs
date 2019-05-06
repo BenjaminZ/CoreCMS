@@ -7,7 +7,7 @@ namespace CoreCMS.Domain.Entities
     public class AdminMenu
     {
         public int AdminMenuId { get; set; }
-        public int ParentMenuId { get; set; }
+        public int? ParentMenuId { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string IconPath { get; set; }
