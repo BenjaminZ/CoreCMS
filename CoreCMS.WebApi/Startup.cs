@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Extensions;
+﻿using CoreCMS.Persistence;
+using GraphQL;
+using GraphQL.Http;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace CoreCMS.WebApi
 {
@@ -26,28 +25,41 @@ namespace CoreCMS.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddOData();
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+            services.AddScoped<ISchema, CMSSchema>();
+            
+            services.AddGraphQL()
+                .AddGraphTypes(ServiceLifetime.Scoped);
+            services.AddDbContext<CMSDbContext>(options => { options.UseSqlite("Data Source=App_Data/CoreCMS.db"); });
+
+            services.AddGraphQL(_ =>
+            {
+                _.EnableMetrics = true;
+                _.ExposeExceptions = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
-            app.UseMvc(routBuilder =>
+            // add http for Schema at default url /graphql
+            app.UseGraphQL<ISchema>();
+
+            // use graphql-playground at default url /ui/playground
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
             {
-                routBuilder.EnableDependencyInjection();
-                routBuilder.Expand().Select().Count().OrderBy();
+                Path = "/ui/playground"
             });
         }
     }
