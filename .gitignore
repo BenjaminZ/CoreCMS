@@ -37,4 +37,4 @@ msbuild.wrn
 .vs/
 
 # Node
-**/node_modules
+**/node_modules/
